@@ -1,0 +1,85 @@
+#!/bin/bash
+# Variables Warna
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NC='\033[0m' # No Color
+
+status () {
+    if [[ -f /etc/modules.d/8189fs && -f /etc/config/wireless  ]]; then
+        echo -e "${NC}Status Wifi ${GREEN}Aktif ${NC}"
+    else
+        echo -e "${NC}Status Wifi ${RED}Tidak Aktif ${NC}"
+    fi
+}
+
+aktivasi () {
+    echo -e "${GREEN}Mengaktifkan ...."
+    if [[ -f /etc/modules.d/8189fs && -f /etc/config/wireless  ]]; then
+        sleep 5
+        echo -e "${RED}Gagal Mengaktivasi"
+        echo -e "${RED}Status Sudah ${RED}Aktif${NC}"
+    else 
+        echo "8189fs" > /etc/modules.d/8189fs
+        echo "config wifi-device 'radio0'
+option type 'mac80211'
+option path 'platform/soc/d0000000.apb/d0070000.mmc/mmc_host/mmc0/mmc0:0001/mmc0:0001:1'
+option channel '1'
+option band '2g'
+option htmode 'NOHT'
+option disabled '0'
+
+config wifi-iface 'default_radio0'
+option device 'radio0'
+option network 'lan'
+option mode 'ap'
+option ssid 'BNS-stb'
+option encryption 'none'" > /etc/config/wireless
+        sleep 5
+        echo -e "${GREEN}Selesai ..."
+        echo -e "${GREEN}Silahkan Reboot STB ...${NC}"
+
+    fi 
+}
+deactivate () {
+    echo -e "${RED}Menonaktifkan ....."
+    if [[ -f /etc/modules.d/8189fs && -f /etc/config/wireless ]]; then
+        rm -r /etc/modules.d/8189fs && rm -r /etc/config/wireless
+        sleep 5
+        echo -e "${GREEN}Selesai ..."
+        echo -e "${GREEN}Silahkan Reboot STB ...${NC}"
+
+    else 
+        sleep 5
+        echo -e "${RED}Gagal"
+        echo -e "${RED}Wifi Sudah Mati...${NC}"
+
+    fi
+}
+
+status
+echo -e "${NC}Silahkan Dipilih ..."
+options=("Mengaktifkan Wifi" "Menonaktifkan Wifi" "Quit")
+
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Mengaktifkan Wifi")
+            aktivasi
+            break
+            ;;
+        "Menonaktifkan Wifi")
+            deactivate
+            break
+            ;;
+        "Quit")
+            echo -e "${RED}Bai Bai ${NC}"
+    
+            sleep 5
+            break
+            ;;
+        *) echo -e "${RED}Input $REPLY Tidak Ada Di Daftar Silahkan Mulai Lagi ${NC}"
+    
+            ;;
+    esac
+done
