@@ -2,7 +2,7 @@
 # Variables Warna
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 status () {
@@ -19,6 +19,7 @@ aktivasi () {
         sleep 5
         echo -e "${RED}Gagal Mengaktivasi"
         echo -e "${RED}Status Sudah ${RED}Aktif${NC}"
+        echo -e "${BLUE}==    Created by Jambal     ==${NC}"
     else 
         echo "8189fs" > /etc/modules.d/8189fs
         echo "config wifi-device 'radio0'
@@ -38,6 +39,7 @@ option encryption 'none'" > /etc/config/wireless
         sleep 5
         echo -e "${GREEN}Selesai ..."
         echo -e "${GREEN}Silahkan Reboot STB ...${NC}"
+        echo -e "${BLUE}==    Created by Jambal     ==${NC}"
 
     fi 
 }
@@ -48,17 +50,20 @@ deactivate () {
         sleep 5
         echo -e "${GREEN}Selesai ..."
         echo -e "${GREEN}Silahkan Reboot STB ...${NC}"
+        echo -e "${BLUE}==    Created by Jambal     ==${NC}"
 
     else 
         sleep 5
         echo -e "${RED}Gagal"
         echo -e "${RED}Wifi Sudah Mati...${NC}"
+        echo -e "${BLUE}==    Created by Jambal     ==${NC}"
 
     fi
 }
 
 status
 echo -e "${NC}Silahkan Dipilih ..."
+echo "==    Created by Jambal     =="
 options=("Mengaktifkan Wifi" "Menonaktifkan Wifi" "Quit")
 
 select opt in "${options[@]}"
@@ -74,11 +79,12 @@ do
             ;;
         "Quit")
             echo -e "${RED}Bai Bai ${NC}"
-    
+            echo -e "${BLUE}==    Created by Jambal     ==${NC}"
             sleep 5
             break
             ;;
         *) echo -e "${RED}Input $REPLY Tidak Ada Di Daftar Silahkan Mulai Lagi ${NC}"
+            echo -e "${BLUE}==    Created by Jambal     ==${NC}"
     
             ;;
     esac
